@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Advanced Port Scanner Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🔍 Advanced Port Scanner Dashboard</h1>
+
+    <form method="POST" class="scan-form">
+
+        <input type="text"
+               name="target"
+               placeholder="Target IP / Domain"
+               required>
+
+        <input type="number"
+               name="start_port"
+               placeholder="Start Port"
+               required>
+
+        <input type="number"
+               name="end_port"
+               placeholder="End Port"
+               required>
+
+        <button type="submit">Scan</button>
+
+    </form>
+
+    {% if target %}
+
+    <div class="target-box">
+        <h3>🎯 Target Scanned</h3>
+        <p>{{ target }}</p>
+
+        <h3 style="margin-top:15px;">🌐 Resolved IP</h3>
+        <p>{{ resolved_ip }}</p>
+    </div>
+
+    {% endif %}
+
+    {% if scan_time %}
+
+    <div class="stats">
+
+        <div class="card">
+            <h3>{{ results|length }}</h3>
+            <p>Open Ports</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ total_ports }}</h3>
+            <p>Ports Scanned</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ risk }}</h3>
+            <p>Risk Level</p>
+        </div>
+
+        <div class="card">
+            <h3>{{ scan_time }}</h3>
+            <p>Scan Time (s)</p>
+        </div>
+
+    </div>
+
+    <div class="summary">
+        <h2>📋 Scan Summary</h2>
+
+        <p>
+            Successfully scanned <strong>{{ target }}</strong>.
+            A total of <strong>{{ results|length }}</strong> open ports
+            were identified out of <strong>{{ total_ports }}</strong>
+            scanned ports. Current exposure level is
+            <strong>{{ risk }}</strong>.
+        </p>
+    </div>
+
+    <div class="table-container">
+
+        <table>
+
+            <tr>
+                <th>Port</th>
+                <th>Service</th>
+                <th>Protocol</th>
+                <th>Status</th>
+            </tr>
+
+            {% for port in results %}
+
+            <tr>
+                <td>{{ port.port }}</td>
+                <td>{{ port.service }}</td>
+                <td>TCP</td>
+                <td>
+                    <span class="open">OPEN</span>
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
+
+    {% endif %}
+
+    <footer>
+        Advanced Port Scanner Dashboard | Developed by Shraddha Shetty
+    </footer>
+
+</div>
+
+</body>
+</html>
